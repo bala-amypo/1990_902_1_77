@@ -9,22 +9,22 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/gaps")
-@Tag(name = "Skill Gaps")
+@Tag(name = "Skill Gap")
 public class SkillGapController {
 
-    private final SkillGapService service;
+    private final SkillGapService skillGapService;
 
-    public SkillGapController(SkillGapService service) {
-        this.service = service;
+    public SkillGapController(SkillGapService skillGapService) {
+        this.skillGapService = skillGapService;
     }
 
     @PostMapping("/compute/{studentId}")
     public ResponseEntity<List<SkillGapRecord>> computeGaps(@PathVariable Long studentId) {
-        return ResponseEntity.ok(service.computeGaps(studentId));
+        return ResponseEntity.ok(skillGapService.computeGaps(studentId));
     }
 
     @GetMapping("/student/{studentId}")
     public ResponseEntity<List<SkillGapRecord>> getGaps(@PathVariable Long studentId) {
-        return ResponseEntity.ok(service.getGapsByStudent(studentId));
+        return ResponseEntity.ok(skillGapService.getGapsByStudent(studentId));
     }
 }

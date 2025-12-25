@@ -11,16 +11,26 @@ public class AssessmentResult {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_profile_id")
+    @JoinColumn(name = "student_profile_id", nullable = false)
     private StudentProfile studentProfile;
 
     @ManyToOne
-    @JoinColumn(name = "skill_id")
+    @JoinColumn(name = "skill_id", nullable = false)
     private Skill skill;
 
+    @Column(nullable = false)
     private Double scoreObtained;
+    
+    @Column(nullable = false)
     private Double maxScore;
-    private LocalDateTime assessedAt = LocalDateTime.now();
+    
+    @Column(nullable = false)
+    private LocalDateTime assessedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        assessedAt = LocalDateTime.now();
+    }
 
     public AssessmentResult() {}
 

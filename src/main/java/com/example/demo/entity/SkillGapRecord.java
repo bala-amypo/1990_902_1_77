@@ -11,17 +11,29 @@ public class SkillGapRecord {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_profile_id")
+    @JoinColumn(name = "student_profile_id", nullable = false)
     private StudentProfile studentProfile;
 
     @ManyToOne
-    @JoinColumn(name = "skill_id")
+    @JoinColumn(name = "skill_id", nullable = false)
     private Skill skill;
 
+    @Column(nullable = false)
     private Double currentScore;
+    
+    @Column(nullable = false)
     private Double targetScore;
+    
+    @Column(nullable = false)
     private Double gapScore;
-    private LocalDateTime calculatedAt = LocalDateTime.now();
+    
+    @Column(nullable = false)
+    private LocalDateTime calculatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        calculatedAt = LocalDateTime.now();
+    }
 
     public SkillGapRecord() {}
 

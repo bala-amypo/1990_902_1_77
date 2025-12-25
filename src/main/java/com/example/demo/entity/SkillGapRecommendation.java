@@ -11,18 +11,31 @@ public class SkillGapRecommendation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_profile_id")
+    @JoinColumn(name = "student_profile_id", nullable = false)
     private StudentProfile studentProfile;
 
     @ManyToOne
-    @JoinColumn(name = "skill_id")
+    @JoinColumn(name = "skill_id", nullable = false)
     private Skill skill;
 
+    @Column(nullable = false)
     private String recommendedAction;
+    
+    @Column(nullable = false)
     private String priority;
-    private LocalDateTime generatedAt = LocalDateTime.now();
+    
+    @Column(nullable = false)
+    private LocalDateTime generatedAt;
+    
+    @Column(nullable = false)
     private Double gapScore;
+    
     private String generatedBy;
+
+    @PrePersist
+    protected void onCreate() {
+        generatedAt = LocalDateTime.now();
+    }
 
     public SkillGapRecommendation() {}
 

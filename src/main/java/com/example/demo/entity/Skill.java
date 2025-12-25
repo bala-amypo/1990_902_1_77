@@ -14,6 +14,7 @@ public class Skill {
 
     private String category;
     private String description;
+    @Column(nullable = false)
     private Double minCompetencyScore;
     private Boolean active = true;
 

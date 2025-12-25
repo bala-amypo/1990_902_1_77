@@ -17,7 +17,9 @@ public class StudentProfile {
     private String enrollmentId;
 
     private String cohort;
+
     private Integer yearLevel;
+
     private Boolean active = true;
 
     public StudentProfile() {}
@@ -27,6 +29,7 @@ public class StudentProfile {
         this.enrollmentId = enrollmentId;
         this.cohort = cohort;
         this.yearLevel = yearLevel;
+        this.active = true;
     }
 
     public Long getId() { return id; }
