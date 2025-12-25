@@ -29,7 +29,7 @@ public class AssessmentController {
     }
 
     @GetMapping("/student/{studentId}/skill/{skillId}")
-    public ResponseEntity<AssessmentResult> getSpecificResult(@PathVariable Long studentId, @PathVariable Long skillId) {
+    public ResponseEntity<List<AssessmentResult>> getSpecificResult(@PathVariable Long studentId, @PathVariable Long skillId) {
         return ResponseEntity.ok(service.getResultsByStudentAndSkill(studentId, skillId));
     }
 }

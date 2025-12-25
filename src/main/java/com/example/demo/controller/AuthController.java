@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.User;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(@RequestBody User user) {
-        String message = authService.register(user);
-        return ResponseEntity.ok(Map.of("message", message));
+    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest request) {
+        String token = authService.register(request);
+        return ResponseEntity.ok(Map.of("token", token));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
-        String message = authService.login(user);
-        return ResponseEntity.ok(Map.of("message", message));
+    @PostMapping("/loginn")
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
+        String token = authService.login(request);
+        return ResponseEntity.ok(Map.of("token", token));
     }
 }
