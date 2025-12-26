@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
@@ -26,8 +27,20 @@ public class JwtUtil {
                 .compact();
     }
 
-    public void validateAndParse(String token) {
-        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+    public String generateToken(User user) {
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("email", user.getEmail())
+                .claim("role", user.getRole().name())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + validityInMs))
+                .signWith(key)
+                .compact();
+    }
+
+    public Jws<Claims> validateAndParse(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
     }
 
     public String getEmailFromToken(String token) {
