@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.StudentProfile;
+import com.example.demo.entity.StudentProfile;
 import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.StudentProfileService;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,19 @@ public class StudentProfileServiceImpl implements StudentProfileService {
         return studentProfileRepository.save(profile);
     }
 
+    public StudentProfile createOrUpdateProfile(StudentProfile profile) {
+        return studentProfileRepository.save(profile);
+    }
+
     @Override
     public StudentProfile getProfileById(Long id) {
         return studentProfileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("StudentProfile not found"));
+    }
+
+    public StudentProfile getByUserId(Long userId) {
+        return studentProfileRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Student profile not found"));
     }
 
     @Override

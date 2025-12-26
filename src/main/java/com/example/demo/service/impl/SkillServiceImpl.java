@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.Skill;
+import com.example.demo.entity.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,10 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
-        if (skill.getMinCompetencyScore() == null || skill.getMinCompetencyScore() < 0 || skill.getMinCompetencyScore() > 100) {
+        if (skillRepository.findByCode(skill.getCode()).isPresent()) {
+            throw new IllegalArgumentException("Skill code must be unique");
+        }
+        if (skill.getMinCompetencyScore() != null && (skill.getMinCompetencyScore() < 0 || skill.getMinCompetencyScore() > 100)) {
             throw new IllegalArgumentException("Score must be between 0 and 100");
         }
         return skillRepository.save(skill);
@@ -27,14 +30,14 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Skill updateSkill(Long id, Skill skill) {
         Skill existing = skillRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
-        if (skill.getMinCompetencyScore() == null || skill.getMinCompetencyScore() < 0 || skill.getMinCompetencyScore() > 100) {
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
+        if (skill.getMinCompetencyScore() != null && (skill.getMinCompetencyScore() < 0 || skill.getMinCompetencyScore() > 100)) {
             throw new IllegalArgumentException("Score must be between 0 and 100");
         }
-        existing.setSkillName(skill.getSkillName());
-        existing.setCategory(skill.getCategory());
-        existing.setDescription(skill.getDescription());
-        existing.setMinCompetencyScore(skill.getMinCompetencyScore());
+        if (skill.getName() != null) existing.setName(skill.getName());
+        if (skill.getCategory() != null) existing.setCategory(skill.getCategory());
+        if (skill.getDescription() != null) existing.setDescription(skill.getDescription());
+        if (skill.getMinCompetencyScore() != null) existing.setMinCompetencyScore(skill.getMinCompetencyScore());
         return skillRepository.save(existing);
     }
 
@@ -44,9 +47,18 @@ public class SkillServiceImpl implements SkillService {
                 .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
     }
 
+    public Skill getById(Long id) {
+        return skillRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
+    }
+
     @Override
     public List<Skill> getAllSkills() {
         return skillRepository.findAll();
+    }
+
+    public List<Skill> getActiveSkills() {
+        return skillRepository.findByActiveTrue();
     }
 
     @Override

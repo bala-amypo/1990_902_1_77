@@ -2,7 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
-import com.example.demo.model.User;
+import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AuthService;
 import com.example.demo.config.JwtUtil;
@@ -28,15 +28,24 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        User user = new User(
-                request.getFullName(),
-                request.getEmail(),
-                passwordEncoder.encode(request.getPassword()),
-                request.getRole() != null ? request.getRole() : "STUDENT"
-        );
+        User.Role role = User.Role.STUDENT;
+        if (request.getRole() != null) {
+            try {
+                role = User.Role.valueOf(request.getRole().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                role = User.Role.STUDENT;
+            }
+        }
+
+        User user = User.builder()
+                .fullName(request.getFullName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(role)
+                .build();
         
         userRepository.save(user);
-        return jwtUtil.generateToken(user.getEmail(), user.getRole());
+        return jwtUtil.generateToken(user);
     }
 
     @Override
@@ -48,6 +57,6 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Invalid credentials");
         }
 
-        return jwtUtil.generateToken(user.getEmail(), user.getRole());
+        return jwtUtil.generateToken(user);
     }
 }

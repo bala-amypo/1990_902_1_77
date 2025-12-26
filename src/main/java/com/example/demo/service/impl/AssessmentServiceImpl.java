@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.AssessmentResult;
+import com.example.demo.entity.AssessmentResult;
 import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,18 @@ public class AssessmentServiceImpl implements AssessmentService {
 
     @Override
     public AssessmentResult recordResult(AssessmentResult result) {
-        if (result.getScoreObtained() < 0 || result.getScoreObtained() > result.getMaxScore()) {
+        if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
+            throw new IllegalArgumentException("Score must be between 0 and maxScore");
+        }
+        return assessmentResultRepository.save(result);
+    }
+
+    @Override
+    public AssessmentResult recordAssessment(AssessmentResult result) {
+        if (result.getScore() == null) {
+            throw new IllegalArgumentException("Score cannot be null");
+        }
+        if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
             throw new IllegalArgumentException("Score must be between 0 and maxScore");
         }
         return assessmentResultRepository.save(result);
