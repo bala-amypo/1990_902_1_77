@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.SkillGapRecord;
+import com.example.demo.entity.SkillGapRecord;
 import com.example.demo.service.SkillGapService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;

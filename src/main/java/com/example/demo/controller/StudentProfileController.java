@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.StudentProfile;
+import com.example.demo.entity.StudentProfile;
 import com.example.demo.service.StudentProfileService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
