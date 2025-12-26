@@ -97,15 +97,11 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <!-- Remove testng.xml dependency - let surefire auto-discover tests -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
                     <testSourceDirectory>src/test/java</testSourceDirectory>
                     <testClassesDirectory>target/test-classes</testClassesDirectory>
-                    <includes>
-                        <include>**/*Test*.java</include>
-                        <include>**/*TestNG*.java</include>
-                    </includes>
-                    <failIfNoTests>false</failIfNoTests>
-                    <skipTests>false</skipTests>
                 </configuration>
                 <dependencies>
                     <dependency>
