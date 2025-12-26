@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.SkillGapRecommendation;
+import com.example.demo.entity.SkillGapRecommendation;
 import com.example.demo.service.RecommendationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.AssessmentResult;
+import com.example.demo.entity.AssessmentResult;
 import com.example.demo.service.AssessmentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
