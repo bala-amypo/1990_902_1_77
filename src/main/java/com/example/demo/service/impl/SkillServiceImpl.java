@@ -18,7 +18,7 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
-        if (skill.getMinCompetencyScore() < 0 || skill.getMinCompetencyScore() > 100) {
+        if (skill.getMinCompetencyScore() == null || skill.getMinCompetencyScore() < 0 || skill.getMinCompetencyScore() > 100) {
             throw new IllegalArgumentException("Score must be between 0 and 100");
         }
         return skillRepository.save(skill);
@@ -28,7 +28,7 @@ public class SkillServiceImpl implements SkillService {
     public Skill updateSkill(Long id, Skill skill) {
         Skill existing = skillRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Skill not found"));
-        if (skill.getMinCompetencyScore() < 0 || skill.getMinCompetencyScore() > 100) {
+        if (skill.getMinCompetencyScore() == null || skill.getMinCompetencyScore() < 0 || skill.getMinCompetencyScore() > 100) {
             throw new IllegalArgumentException("Score must be between 0 and 100");
         }
         existing.setSkillName(skill.getSkillName());
