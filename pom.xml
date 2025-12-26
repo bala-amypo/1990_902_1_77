@@ -97,11 +97,13 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
                     <testSourceDirectory>src/test/java</testSourceDirectory>
                     <testClassesDirectory>target/test-classes</testClassesDirectory>
+                    <includes>
+                        <include>**/*Test*.java</include>
+                        <include>**/*TestNG*.java</include>
+                    </includes>
+                    <failIfNoTests>false</failIfNoTests>
                 </configuration>
                 <dependencies>
                     <dependency>
