@@ -19,31 +19,31 @@ import com.example.demo.service.RecommendationService;
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private final AssessmentResultRepository assessmentRepository;
-    private final SkillGapRecommendationRepository recommendationRepository;
-    private final StudentProfileRepository studentRepository;
+    private final AssessmentResultRepository assessmentResultRepository;
+    private final SkillGapRecommendationRepository skillGapRecommendationRepository;
+    private final StudentProfileRepository studentProfileRepository;
     private final SkillRepository skillRepository;
 
-    public RecommendationServiceImpl(AssessmentResultRepository assessmentRepository, 
-                                   SkillGapRecommendationRepository recommendationRepository,
-                                   StudentProfileRepository studentRepository,
+    public RecommendationServiceImpl(AssessmentResultRepository assessmentResultRepository, 
+                                   SkillGapRecommendationRepository skillGapRecommendationRepository,
+                                   StudentProfileRepository studentProfileRepository,
                                    SkillRepository skillRepository) {
-        this.assessmentRepository = assessmentRepository;
-        this.recommendationRepository = recommendationRepository;
-        this.studentRepository = studentRepository;
+        this.assessmentResultRepository = assessmentResultRepository;
+        this.skillGapRecommendationRepository = skillGapRecommendationRepository;
+        this.studentProfileRepository = studentProfileRepository;
         this.skillRepository = skillRepository;
     }
 
     @Override
     public List<SkillGapRecommendation> generateRecommendations(Long studentProfileId) {
-        StudentProfile student = studentRepository.findById(studentProfileId).orElse(null);
+        StudentProfile student = studentProfileRepository.findById(studentProfileId).orElse(null);
         if (student == null) return new ArrayList<>();
 
         List<Skill> activeSkills = skillRepository.findByActiveTrue();
         List<SkillGapRecommendation> recommendations = new ArrayList<>();
 
         for (Skill skill : activeSkills) {
-            Optional<AssessmentResult> latestResult = assessmentRepository
+            Optional<AssessmentResult> latestResult = assessmentResultRepository
                     .findTopByStudentProfileIdAndSkillIdOrderByAssessedAtDesc(studentProfileId, skill.getId());
             
             if (latestResult.isPresent()) {
@@ -58,7 +58,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                     SkillGapRecommendation recommendation = new SkillGapRecommendation(
                             student, skill, action, priority, gapScore, "SYSTEM"
                     );
-                    recommendations.add(recommendationRepository.save(recommendation));
+                    recommendations.add(skillGapRecommendationRepository.save(recommendation));
                 }
             }
         }
@@ -67,6 +67,6 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public List<SkillGapRecommendation> getRecommendationsByStudent(Long studentId) {
-        return recommendationRepository.findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
+        return skillGapRecommendationRepository.findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
     }
 }

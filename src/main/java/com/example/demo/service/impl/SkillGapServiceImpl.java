@@ -15,14 +15,14 @@ import java.util.Optional;
 @Service
 public class SkillGapServiceImpl implements SkillGapService {
 
-    private final SkillGapRecordRepository gapRepository;
+    private final SkillGapRecordRepository skillGapRecordRepository;
     private final SkillRepository skillRepository;
-    private final AssessmentResultRepository assessmentRepository;
+    private final AssessmentResultRepository assessmentResultRepository;
 
-    public SkillGapServiceImpl(SkillGapRecordRepository gapRepository, SkillRepository skillRepository, AssessmentResultRepository assessmentRepository) {
-        this.gapRepository = gapRepository;
+    public SkillGapServiceImpl(SkillGapRecordRepository skillGapRecordRepository, SkillRepository skillRepository, AssessmentResultRepository assessmentResultRepository) {
+        this.skillGapRecordRepository = skillGapRecordRepository;
         this.skillRepository = skillRepository;
-        this.assessmentRepository = assessmentRepository;
+        this.assessmentResultRepository = assessmentResultRepository;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SkillGapServiceImpl implements SkillGapService {
         List<SkillGapRecord> gaps = new ArrayList<>();
 
         for (Skill skill : activeSkills) {
-            Optional<AssessmentResult> latestResult = assessmentRepository
+            Optional<AssessmentResult> latestResult = assessmentResultRepository
                     .findTopByStudentProfileIdAndSkillIdOrderByAssessedAtDesc(studentProfileId, skill.getId());
             
             if (latestResult.isPresent()) {
@@ -47,7 +47,7 @@ public class SkillGapServiceImpl implements SkillGapService {
                         targetScore,
                         gapScore
                 );
-                gaps.add(gapRepository.save(gap));
+                gaps.add(skillGapRecordRepository.save(gap));
             }
         }
         return gaps;
@@ -55,6 +55,6 @@ public class SkillGapServiceImpl implements SkillGapService {
 
     @Override
     public List<SkillGapRecord> getGapsByStudent(Long studentId) {
-        return gapRepository.findByStudentProfileId(studentId);
+        return skillGapRecordRepository.findByStudentProfileId(studentId);
     }
 }

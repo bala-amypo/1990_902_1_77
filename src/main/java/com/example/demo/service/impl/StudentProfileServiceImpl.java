@@ -10,31 +10,31 @@ import java.util.List;
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {
 
-    private final StudentProfileRepository repository;
+    private final StudentProfileRepository studentProfileRepository;
 
-    public StudentProfileServiceImpl(StudentProfileRepository repository) {
-        this.repository = repository;
+    public StudentProfileServiceImpl(StudentProfileRepository studentProfileRepository) {
+        this.studentProfileRepository = studentProfileRepository;
     }
 
     @Override
     public StudentProfile createProfile(StudentProfile profile) {
-        return repository.save(profile);
+        return studentProfileRepository.save(profile);
     }
 
     @Override
     public StudentProfile getProfileById(Long id) {
-        return repository.findById(id)
+        return studentProfileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("StudentProfile not found"));
     }
 
     @Override
     public StudentProfile getProfileByEnrollmentId(String enrollmentId) {
-        return repository.findByEnrollmentId(enrollmentId)
+        return studentProfileRepository.findByEnrollmentId(enrollmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("StudentProfile not found"));
     }
 
     @Override
     public List<StudentProfile> getAllProfiles() {
-        return repository.findAll();
+        return studentProfileRepository.findAll();
     }
 }
