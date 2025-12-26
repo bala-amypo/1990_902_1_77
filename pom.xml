@@ -97,20 +97,15 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <!-- Try testng.xml first, fallback to class scanning -->
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
+                    <!-- Remove testng.xml dependency - let surefire auto-discover tests -->
                     <testSourceDirectory>src/test/java</testSourceDirectory>
                     <testClassesDirectory>target/test-classes</testClassesDirectory>
-                    <!-- Fallback: scan for TestNG classes if XML fails -->
                     <includes>
                         <include>**/*Test*.java</include>
                         <include>**/*TestNG*.java</include>
                     </includes>
-                    <!-- Skip tests if no test files found -->
-                    <skipTests>false</skipTests>
                     <failIfNoTests>false</failIfNoTests>
+                    <skipTests>false</skipTests>
                 </configuration>
                 <dependencies>
                     <dependency>
