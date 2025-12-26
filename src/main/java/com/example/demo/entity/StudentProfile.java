@@ -1,6 +1,7 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "student_profiles")
@@ -16,32 +17,54 @@ public class StudentProfile {
     @Column(unique = true, nullable = false)
     private String enrollmentId;
 
-    private String cohort;
+    private String grade;
 
-    private Integer yearLevel;
-
-    private Boolean active = true;
+    @Column(nullable = false)
+    private Instant lastUpdatedAt = Instant.now();
 
     public StudentProfile() {}
 
-    public StudentProfile(User user, String enrollmentId, String cohort, Integer yearLevel) {
-        this.user = user;
-        this.enrollmentId = enrollmentId;
-        this.cohort = cohort;
-        this.yearLevel = yearLevel;
-        this.active = true;
+    private StudentProfile(Builder builder) {
+        this.id = builder.id;
+        this.user = builder.user;
+        this.enrollmentId = builder.enrollmentId;
+        this.grade = builder.grade;
+        this.lastUpdatedAt = builder.lastUpdatedAt;
     }
 
+    @PreUpdate
+    public void preUpdate() {
+        this.lastUpdatedAt = Instant.now();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Long id;
+        private User user;
+        private String enrollmentId;
+        private String grade;
+        private Instant lastUpdatedAt = Instant.now();
+
+        public Builder id(Long id) { this.id = id; return this; }
+        public Builder user(User user) { this.user = user; return this; }
+        public Builder enrollmentId(String enrollmentId) { this.enrollmentId = enrollmentId; return this; }
+        public Builder grade(String grade) { this.grade = grade; return this; }
+        public Builder lastUpdatedAt(Instant lastUpdatedAt) { this.lastUpdatedAt = lastUpdatedAt; return this; }
+        public StudentProfile build() { return new StudentProfile(this); }
+    }
+
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
     public String getEnrollmentId() { return enrollmentId; }
     public void setEnrollmentId(String enrollmentId) { this.enrollmentId = enrollmentId; }
-    public String getCohort() { return cohort; }
-    public void setCohort(String cohort) { this.cohort = cohort; }
-    public Integer getYearLevel() { return yearLevel; }
-    public void setYearLevel(Integer yearLevel) { this.yearLevel = yearLevel; }
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public String getGrade() { return grade; }
+    public void setGrade(String grade) { this.grade = grade; }
+    public Instant getLastUpdatedAt() { return lastUpdatedAt; }
+    public void setLastUpdatedAt(Instant lastUpdatedAt) { this.lastUpdatedAt = lastUpdatedAt; }
 }

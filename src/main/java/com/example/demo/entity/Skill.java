@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
@@ -10,33 +10,54 @@ public class Skill {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String skillName;
+    private String code;
 
-    private String category;
-    private String description;
     @Column(nullable = false)
-    private Double minCompetencyScore;
-    private Boolean active = true;
+    private String name;
+
+    private String description;
+
+    @Column(nullable = false)
+    private boolean active = true;
 
     public Skill() {}
 
-    public Skill(String skillName, String category, String description, Double minCompetencyScore) {
-        this.skillName = skillName;
-        this.category = category;
-        this.description = description;
-        this.minCompetencyScore = minCompetencyScore;
+    private Skill(Builder builder) {
+        this.id = builder.id;
+        this.code = builder.code;
+        this.name = builder.name;
+        this.description = builder.description;
+        this.active = builder.active;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Long id;
+        private String code;
+        private String name;
+        private String description;
+        private boolean active = true;
+
+        public Builder id(Long id) { this.id = id; return this; }
+        public Builder code(String code) { this.code = code; return this; }
+        public Builder name(String name) { this.name = name; return this; }
+        public Builder description(String description) { this.description = description; return this; }
+        public Builder active(boolean active) { this.active = active; return this; }
+        public Skill build() { return new Skill(this); }
+    }
+
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getSkillName() { return skillName; }
-    public void setSkillName(String skillName) { this.skillName = skillName; }
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public Double getMinCompetencyScore() { return minCompetencyScore; }
-    public void setMinCompetencyScore(Double minCompetencyScore) { this.minCompetencyScore = minCompetencyScore; }
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }
